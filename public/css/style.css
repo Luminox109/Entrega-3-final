@@ -1,0 +1,139 @@
+/* Importación fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+/* colores */
+:root {
+    --ff-bg-dark: #1e0f3a;
+    --ff-bg-light: #0a0a3a;
+    --ff-border: #cea726; 
+    --ff-text: #f0f0f0; 
+    --ff-text-highlight: #f2ff3b;
+    --ff-blue-accent: #1c3e6d; 
+}
+
+/* Estilos generales del cuerpo */
+body {
+    background-image: url('../img/skycloud.png');
+     background-color: var(--ff-bg-dark);
+    background-size: auto 50%;
+    background-attachment: fixed;
+    color: var(--ff-text);
+    font-family: 'Cinzel', serif; 
+}
+
+/* Título + estilo Fuente */
+.ff-title {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--ff-text-highlight);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Barra de navegación */
+.navbar {
+    background-color: var(--ff-bg-light) !important;
+    border-bottom: 2px solid var(--ff-border);
+}
+
+/* Enlaces de la barra de navegación */
+.navbar-brand, .nav-link {
+    color: var(--ff-text) !important;
+}
+
+/* Efecto hover en enlaces de la barra de navegación */
+.navbar-brand:hover, .nav-link:hover {
+    color: var(--ff-text-highlight) !important;
+}
+
+/* Estilo de las tarjetas de producto */
+.card {
+    background-color: var(--ff-bg-light);
+    border: 3px solid var(--ff-border);
+    border-radius: 100;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Título y texto de las tarjetas */
+.card-title {
+    color: var(--ff-text-highlight);
+    font-weight: 700;
+}
+
+/* Texto de las tarjetas */
+.card-text {
+    color: var(--ff-text);
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--ff-blue-accent);
+    border: 1px solid var(--ff-border);
+    border-radius: 5px;
+    color: var(--ff-text);
+    transition: all 0.3s ease;
+}
+
+/* Efecto hover en botones primarios */
+.btn-primary:hover {
+    background-color: var(--ff-bg-dark);
+    border-color: var(--ff-text-highlight);
+    color: var(--ff-text-highlight);
+}
+
+/* Estilo para los botones de categoría */
+.btn-outline-primary {
+    background-color: #1c3e6d;
+    color: var(--ff-text);
+    border-color: #1c3e6d;
+}
+/* Efecto hover en botones de categoría */
+.btn-outline-primary:hover, .btn-outline-primary.active {
+    background-color: var(--ff-bg-dark);
+    color: var(--ff-text-highlight);
+    border-color: var(--ff-text-highlight);
+}
+
+/* Botones secundarios */
+.btn-secondary {
+    background-color: var(--ff-bg-dark);
+    border: 1px solid var(--ff-border);
+    border-radius: 5px;
+    color: var(--ff-text);
+    transition: all 0.5s ease;
+}
+
+/* Efecto hover en botones secundarios */
+.btn-secondary:hover {
+    background-color: var(--ff-border);
+    color: var(--ff-bg-dark);
+}
+
+/* Estilo para la lista del carrito */
+.list-group-item {
+    background-color: var(--ff-bg-light);
+    border: 1px solid var(--ff-border);
+    color: var(--ff-text);
+}
+
+/* Links */
+a {
+    color: var(--ff-blue-accent);
+}
+
+/* Efecto hover en links */
+a:hover {
+    color: var(--ff-text-highlight);
+}
+
+/* Título de la página de inicio */
+.home-title {
+    color: var(--ff-text-highlight);
+}
+.home-container {
+    text-shadow: #000000 2px 2px 5px;;
+    text-align: center;
+}
+.mx-auto {
+    -webkit-text-stroke-color: #131313;
+    text-shadow: #000000 4px 4px 10px;
+}

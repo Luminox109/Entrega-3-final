@@ -1,0 +1,115 @@
+<h1 classes="mb-4">Nuestros Productos</h1>
+{{!-- Filtros de categoría --}}
+<div class="mb-4">
+    {{!-- Título de filtro --}}
+    <h5>Filtrar por Categoría:</h5>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/products" class="btn btn-outline-primary {{#unless currentQuery}}active{{/unless}}">
+            Todas
+        </a>
+        {{#each Categories}}
+            <a href="/products?query={{this}}" class="btn btn-outline-primary {{#if (eq this ../currentQuery)}}active{{/if}}">
+                {{this}}
+            </a>
+        {{/each}}
+    </div>
+</div>
+{{!-- Lista de productos --}}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {{#each products}}
+        <div class="col">
+            {{!-- tarjeta de producto --}}
+            <div class="card h-100">
+                <img src="{{this.thumbnail}}" class="card-img-top" alt="{{this.title}}" style="height: 600px; object-fit: cover;">
+                {{!-- Detalles del producto --}}
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.description}}</p>
+                    <p class="card-text"><strong>Categoría:</strong> {{this.category}}</p>
+                    <p class="card-text fs-5"><strong>Precio:</strong> ${{this.price}}</p>
+                </div>
+                {{!-- Botones de detalle y agregar al carrito --}}
+                <div class="card-footer d-flex justify-content-between">
+                     <a href="/products/{{this._id}}" class="btn btn-secondary">Detalle</a>
+                     <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
+
+<nav aria-label="page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {{#if hasPrevPage}}
+            <li class="page-item"><a class="page-link" href="{{prevLink}}">Anterior</a></li>
+        {{else}}
+            <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+        {{/if}}
+
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">Página {{page}} de {{totalPages}}</span>
+        </li>
+
+                {{#if hasNextPage}}
+            <li class="page-item"><a class="page-link" href="{{nextLink}}">Siguiente</a></li>
+        {{else}}
+            <li class="page-item disabled"><a class="page-link" href="#">Siguiente</a></li>
+        {{/if}}
+    </ul>
+</nav>
+
+<script>
+    // Manejo de error de carrito no encontrado
+    window.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("errpr") === "CartNotFound") {
+            localStorage.removeItem("cartId");
+            alert(" tu carrito no existe, esté se creará uno nuevo al agregar un producto.");
+            window.history.replaceState({}, document.title, "/products");
+        }
+    });
+
+    // Obtener o crear un carrito
+    async function getOrCreateCart() {
+        let cartId = localStorage.getItem("cartId");
+        // Verificar si el carrito existe
+        if (!cartId) {
+            try {
+                const response = await fetch ("/api/carts", { method: "POST"});
+                const cart =await response.json();
+                localStronger.seItem("cartId", cartId);
+                console.log("Nuevo carrito creado con ID:", cartId);          
+            }catch (error) {
+                console.error("Error al crear un nuevo carrito:", error);
+                return null;
+            }
+
+        }
+        return cartId;
+    }
+    // Agregar un producto al carrito
+    async function addToCart(productId) {
+        const cartId = await getOrCreateCart();
+        if (!cartId) {
+            alert ("No se pudo obtener o crear un carrito. Inténtalo de nuevo más tarde.");
+            return;
+        }
+        // Llamada a la API para agregar el producto al carrito
+        try {
+            const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                method: "POST",
+            });
+            // Manejo de respuesta de la API
+            if (response.ok) {
+                alert ("¡Producto ha sido añadido al carrito!.");
+            } else {
+                const errorData = await response.json();
+                alert (`Error al agregar el producto al carrito: ${errorData.message}`);
+            }
+            // Actualizar la página con el carrito actualizado
+        } catch (error) {
+            console.error("Error al agregar el producto al carrito:", error);
+            alert ("Error al añadir el producto al carrito.");
+        }
+    }
+</script>

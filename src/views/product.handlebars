@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-md-6">
+        {{!-- Imagen del producto --}}
+        <img src="{{product.thumbnail}}" alt="{{product.title}}" class="img-fluid rounded">
+    </div>
+        {{!-- Detalles del producto --}}
+    <div class="col-md-6">
+        <h1>{{product.title}}</h1>
+        <p class="lead">{{product.description}}</p>
+        <p><strong>Categoría:</strong> {{product.category}}</p>
+        <p class="fs-4"><strong>Precio:</strong> ${{product.price}}</p>
+        <p><strong>Stock disponible:</strong> {{product.stock}}</p>
+    
+        <hr>
+      {{!-- Agregar al carrito con cantidad --}}
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <label for="quantity" class="form-label">Cantidad:</label>
+                <input class="d-flex align-items-center" type="number" id="quantity" class="form-control" value="1" min="1" max="{{product.stock}}">
+            </div>
+        {{!-- Botón agregar al carrito --}}
+            <button class="btn btn-primary btn-lg mt-4" onclick="addToCartWithQuantity("{{product._id}}")">Agregar al Carrito</button>
+        </div>
+        {{!-- Botón volver a la lista de productos --}}
+        <a href="/products" class="btn btn-secondary mt-4">Volver a la lista</a>
+    </div>
+</div>
+
+<script>
+    // funcion para agregar un producto al carrito con cantidad
+    async function addToCartWithQuantity(productId) {
+        const quantity = document.getElementById("quantity").value;
+        const cartId = await getOrCreateCartId();
+
+        if (!cartId) {
+            alert("No se pudo obtener o crear el carrito intentelo de nuevo.");
+            return;
+        }
+        try {
+            const response = await fetch( `/api/carts/${cartId}/products/${productId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ quantity: parseInt(quantity) }),
+            });
+            if (response.ok) {
+                alert("¡Producto añadido/actualizado al carrito!");
+            } else {
+                const errorData = await response.json();
+                alert(`Error al añadir el producto al carrito: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Error de añadir un producto al carrito:", error);
+            alert("Error al añadir el producto al carrito.");
+        }
+    }
+
+    async function getOrCreateCartId() {
+        let cartId = localStorage.getItem("cartId");
+        if (!cartId) {
+            try {
+                const response = await fetch ("/api/carts", { method: "POST"});
+                const cart = await response.json();
+                cartId = cart._id;
+                localStorage.setItem("cartId", cartId);
+            } catch (error) {
+                console.error("Error al crear un nuevo carrito:", error);
+                return null;
+            }
+        }
+        return cartId;
+    }
+</script>
