@@ -19,7 +19,7 @@
                 <input class="d-flex align-items-center" type="number" id="quantity" class="form-control" value="1" min="1" max="{{product.stock}}">
             </div>
         {{!-- Botón agregar al carrito --}}
-            <button class="btn btn-primary btn-lg mt-4" onclick="addToCartWithQuantity("{{product._id}}")">Agregar al Carrito</button>
+            <button class="btn btn-primary btn-lg mt-4" onclick="addToCartWithQuantity('{{product._id}}')">Agregar al Carrito</button>
         </div>
         {{!-- Botón volver a la lista de productos --}}
         <a href="/products" class="btn btn-secondary mt-4">Volver a la lista</a>
@@ -71,4 +71,5 @@
         }
         return cartId;
     }
+
 </script>
