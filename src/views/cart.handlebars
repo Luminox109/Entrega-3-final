@@ -51,7 +51,7 @@
                 body: JSON.stringify({ quantity: newQuantity }),
             });
             if (response.ok) {
-                windows.location.reload();
+                window.location.reload();
             } else {
                 alert("Error al actualizar la cantidad del producto.");
             }
@@ -80,4 +80,5 @@
             alert("Error al eliminar el producto del carrito.");
         }
     }
+
 </script>
